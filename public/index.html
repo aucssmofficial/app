@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Air University Cyber Security Society Multan – Member Verification</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page-wrap">
+      <header class="site-header glass">
+        <div class="brand">
+          <img
+            src="logo.png"
+            alt="Air University Cyber Security Society Multan Logo"
+            class="logo"
+            onerror="this.style.display='none'"
+          />
+          <div class="brand-text">
+            <h1>Air University Cyber Security Society Multan</h1>
+            <p>Official Member Card Verification</p>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card glass">
+          <h2>Verify Society Member Card</h2>
+          <p class="subtitle">
+            To verify a card, either scan the QR with your mobile device or use the roll number lookup.
+          </p>
+
+          <div class="home-layout">
+            <div class="instructions">
+              <h3>Verify using QR code</h3>
+              <p class="muted">
+                1. Open the camera or QR-scanner app on your mobile phone.<br />
+                2. Point it at the QR code on the AU CSSM / AU Cyber Security Society member card.<br />
+                3. Your phone will open a secure verification link.<br />
+                4. If the card is valid, the member details will be shown.
+              </p>
+            </div>
+
+            <div class="result" id="verification-result">
+              <h3>Verify using Roll Number</h3>
+              <form id="roll-form" class="roll-form">
+                <label>
+                  Roll Number
+                  <input
+                    type="text"
+                    id="roll-input"
+                    name="rollNumber"
+                    placeholder="e.g. CS-21-123"
+                    required
+                  />
+                </label>
+                <button type="submit" class="primary-btn">Verify</button>
+              </form>
+              <div id="roll-result" class="roll-result muted">
+                Enter a roll number to verify a member.
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer glass">
+        <div class="footer-left">
+          <p>
+            Contact:
+            <a href="mailto:aucssm.official@gmail.com"
+              >aucssm.official@gmail.com</a
+            >
+          </p>
+        </div>
+        <div class="footer-right">
+          <a
+            href="https://pk.linkedin.com/company/aucssm"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+          <a
+            href="https://www.instagram.com/aucssm"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Instagram</a
+          >
+        </div>
+      </footer>
+    </div>
+
+    <script src="particles.js" type="module"></script>
+    <script src="main.js" type="module"></script>
+  </body>
+  </html>
+

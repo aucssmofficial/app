@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AU CSSM Admin – Member QR Manager</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-body">
+    <canvas id="bg-canvas"></canvas>
+    <div class="page-wrap">
+      <header class="site-header glass">
+        <div class="brand">
+          <img
+            src="logo.png"
+            alt="AU CSSM Logo"
+            class="logo"
+            onerror="this.style.display='none'"
+          />
+          <div class="brand-text">
+            <h1>AU CSSM Admin Panel</h1>
+            <p>Secure member QR code management</p>
+          </div>
+        </div>
+      </header>
+
+      <main class="content admin-content">
+        <section class="card glass">
+          <h2>Create New Member QR</h2>
+          <form id="member-form" class="form-grid">
+            <label>
+              Name
+              <input type="text" name="name" required />
+            </label>
+            <label>
+              Roll Number
+              <input type="text" name="rollNumber" required />
+            </label>
+            <label>
+              Department
+              <input type="text" name="department" required />
+            </label>
+            <label>
+              Designation
+              <input type="text" name="designation" required />
+            </label>
+            <label>
+              Session
+              <input type="text" name="session" placeholder="2022–2026" required />
+            </label>
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">Generate QR</button>
+              <span id="form-status" class="muted"></span>
+            </div>
+          </form>
+        </section>
+
+        <section class="card glass">
+          <h2>Latest QR Code</h2>
+          <div id="qr-preview" class="qr-preview muted">
+            Generated QR will appear here after creating a member.
+          </div>
+          <div class="qr-actions">
+            <button id="download-qr" class="ghost-btn" disabled>
+              Download QR as PNG
+            </button>
+          </div>
+        </section>
+
+        <section class="card glass">
+          <h2>Existing Members</h2>
+          <div id="members-list" class="members-list muted">
+            Loading members...
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer glass">
+        <div class="footer-left">
+          <p>AU CSSM Admin Area</p>
+        </div>
+        <div class="footer-right">
+          <a href="/" class="ghost-link">Back to Verification</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="particles.js" type="module"></script>
+    <script src="admin.js" type="module"></script>
+  </body>
+  </html>
+
