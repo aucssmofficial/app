@@ -2,7 +2,7 @@ const canvas = document.getElementById("bg-canvas");
 const ctx = canvas.getContext("2d");
 
 let particles = [];
-const PARTICLE_COUNT = 80;
+const PARTICLE_COUNT = 120;
 
 function resize() {
   canvas.width = window.innerWidth;
@@ -18,9 +18,9 @@ function createParticles() {
     particles.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.6,
-      vy: (Math.random() - 0.5) * 0.6,
-      radius: 1.2 + Math.random() * 1.8,
+      vx: (Math.random() - 0.5) * 0.42,
+      vy: (Math.random() - 0.5) * 0.42,
+      radius: 1.2 + Math.random() * 1.6,
     });
   }
 }
@@ -30,11 +30,11 @@ createParticles();
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "rgba(15,23,42,0.9)";
+  ctx.fillStyle = "rgba(224,242,254,0.22)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "rgba(56,189,248,0.9)";
-  const linkColor = "rgba(56,189,248,0.28)";
+  ctx.fillStyle = "rgba(37,99,235,0.95)";
+  const linkColor = "rgba(37,99,235,0.42)";
 
   for (const p of particles) {
     p.x += p.vx;
@@ -59,9 +59,9 @@ function draw() {
       const dx = p1.x - p2.x;
       const dy = p1.y - p2.y;
       const distSq = dx * dx + dy * dy;
-      if (distSq < 130 * 130) {
-        const alpha = 1 - distSq / (130 * 130);
-        ctx.strokeStyle = `rgba(56,189,248,${alpha * 0.5})`;
+      if (distSq < 145 * 145) {
+        const alpha = 1 - distSq / (145 * 145);
+        ctx.strokeStyle = `rgba(37,99,235,${alpha * 0.55})`;
         ctx.beginPath();
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);

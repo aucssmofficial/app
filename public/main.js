@@ -1,6 +1,8 @@
 const rollForm = document.getElementById("roll-form");
 const rollInput = document.getElementById("roll-input");
 const rollResult = document.getElementById("roll-result");
+const verifyBtn = document.getElementById("verify-btn");
+const clearBtn = document.getElementById("clear-btn");
 
 function setRollStatus(message, isError = false) {
   if (!rollResult) return;
@@ -16,6 +18,10 @@ async function verifyByRoll(rollNumber) {
     return;
   }
 
+  if (verifyBtn) {
+    verifyBtn.disabled = true;
+    verifyBtn.textContent = "Verifying...";
+  }
   setRollStatus("Verifying...");
 
   try {
@@ -48,6 +54,11 @@ async function verifyByRoll(rollNumber) {
       err.message || "Member not found. Card may be invalid or revoked.",
       true
     );
+  } finally {
+    if (verifyBtn) {
+      verifyBtn.disabled = false;
+      verifyBtn.textContent = "Verify";
+    }
   }
 }
 
@@ -55,6 +66,16 @@ if (rollForm && rollInput) {
   rollForm.addEventListener("submit", (event) => {
     event.preventDefault();
     verifyByRoll(rollInput.value);
+  });
+}
+
+if (clearBtn && rollInput && rollResult) {
+  clearBtn.addEventListener("click", () => {
+    rollInput.value = "";
+    rollInput.focus();
+    rollResult.textContent = "Enter a roll number to verify a member.";
+    rollResult.classList.remove("error-text");
+    rollResult.classList.add("muted");
   });
 }
 

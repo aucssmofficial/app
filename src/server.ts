@@ -2,30 +2,15 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import path from "path";
-import QRCode from "qrcode";
 import { config as loadEnv } from "dotenv";
-import {
-  createMember,
-  deleteMember,
-  getMember,
-  getMemberByRollNumber,
-  listMembers,
-} from "./store";
-import { MemberInput } from "./types";
+import { getMemberByRollNumber, listMembers } from "./store";
 
 loadEnv();
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const BASE_URL =
   process.env.BASE_URL || `http://localhost:${String(port).trim()}`;
-
-if (!ADMIN_USERNAME || !ADMIN_PASSWORD) {
-  throw new Error("ADMIN_USERNAME and ADMIN_PASSWORD must be set in env.");
-}
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -33,94 +18,14 @@ app.use(bodyParser.json());
 const publicDir = path.join(__dirname, "..", "public");
 app.use(express.static(publicDir));
 
-function requireAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
-  const authHeader = req.headers["authorization"];
-  if (!authHeader || !authHeader.startsWith("Basic ")) {
-    res.setHeader("WWW-Authenticate", "Basic realm=\"Admin Area\"");
-    return res.status(401).send("Authentication required");
-  }
-
-  const base64Credentials = authHeader.slice("Basic ".length);
-  const credentials = Buffer.from(base64Credentials, "base64").toString("utf-8");
-  const [username, password] = credentials.split(":", 2);
-
-  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-    return res.status(403).send("Forbidden");
-  }
-
-  next();
-}
-
-app.post(
-  "/api/admin/members",
-  requireAdmin,
-  async (req, res) => {
-  const { name, rollNumber, department, designation, session } =
-    req.body as Partial<MemberInput>;
-
-  if (!name || !rollNumber || !department || !designation || !session) {
-    return res.status(400).json({ error: "All fields are required." });
-  }
-
-  let member;
-  try {
-    member = createMember({
-      name,
-      rollNumber,
-      department,
-      designation,
-      session,
-    });
-  } catch (error) {
-    if (error instanceof Error && error.message === "ROLL_NUMBER_EXISTS") {
-      return res
-        .status(409)
-        .json({ error: "A member with this roll number already exists." });
-    }
-    throw error;
-  }
-
-  const normalizedBase = BASE_URL.replace(/\/+$/u, "");
-  const qrUrl = `${normalizedBase}/verify/${encodeURIComponent(
-    member.rollNumber.trim()
-  )}`;
-
-  try {
-    const qrDataUrl = await QRCode.toDataURL(qrUrl, {
-      errorCorrectionLevel: "M",
-      margin: 1,
-      scale: 6,
-    });
-
-    return res.status(201).json({ member, qrDataUrl, qrUrl });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: "Failed to generate QR code.", details: String(error) });
-  }
-});
-
-app.get("/api/admin/members", requireAdmin, (_req, res) => {
+app.get("/api/members", (_req, res) => {
   const members = listMembers();
-  res.json({ members });
-});
-
-app.delete("/api/admin/members/:id", requireAdmin, (req, res) => {
-  const id = String(req.params.id);
-  const removed = deleteMember(id);
-  if (!removed) {
-    return res.status(404).json({ error: "Member not found." });
-  }
-  res.status(204).send();
-});
-
-app.get("/api/members/:id", (req, res) => {
-  const { id } = req.params;
-  const member = getMember(id);
-  if (!member) {
-    return res.status(404).json({ error: "Member not found." });
-  }
-  res.json({ member });
+  const normalizedBase = BASE_URL.replace(/\/+$/u, "");
+  const membersWithLinks = members.map((m) => ({
+    ...m,
+    verifyUrl: `${normalizedBase}/${encodeURIComponent(m.rollNumber)}`,
+  }));
+  res.json({ members: membersWithLinks });
 });
 
 app.get("/api/members/by-roll/:rollNumber", (req, res) => {
@@ -132,8 +37,11 @@ app.get("/api/members/by-roll/:rollNumber", (req, res) => {
   res.json({ member });
 });
 
-app.get("/verify/:rollNumber", (req, res) => {
+app.get("/:rollNumber", (req, res) => {
   const { rollNumber } = req.params;
+  if (!/^\d+$/u.test(rollNumber)) {
+    return res.status(404).send("Not found");
+  }
   const member = getMemberByRollNumber(rollNumber);
   const title = "AU CSSM Member Verification";
 
@@ -162,30 +70,34 @@ app.get("/verify/:rollNumber", (req, res) => {
       </header>
       <main class="content">
         <section class="card glass verify-card">
-          <div class="member-card">
-            <div class="member-card-header">
-              <span class="member-card-label">Air University Cyber Security Society Multan</span>
+          <div class="verify-panel">
+            <div class="verify-panel-header">
+              <h2>Member Verification</h2>
               <span class="status-pill not-verified">Status: ❌ Not Verified</span>
             </div>
-            <div class="member-card-body">
-              <div class="member-card-photo-wrap placeholder"></div>
-              <div class="member-card-details">
-                <div class="code-card">
-                  <div class="code-card-header">
-                    <span class="code-dot red"></span>
-                    <span class="code-dot yellow"></span>
-                    <span class="code-dot green"></span>
-                    <span class="code-card-title">Member Card.json</span>
-                  </div>
-                  <pre class="code-card-body">
-<span class="code-key">"status"</span>: <span class="code-string">"not_verified"</span>,
-<span class="code-key">"roll"</span>: <span class="code-null">null</span>,
-<span class="code-key">"name"</span>: <span class="code-null">null</span>,
-<span class="code-key">"department"</span>: <span class="code-null">null</span>,
-<span class="code-key">"designation"</span>: <span class="code-null">null</span>,
-<span class="code-key">"session"</span>: <span class="code-null">null</span>
-</pre>
-                </div>
+            <p class="subtitle">
+              This roll number is not found in the official AU CSSM verified registry.
+            </p>
+            <div class="verify-grid">
+              <div class="verify-item">
+                <span class="verify-label">Roll Number</span>
+                <span class="verify-value">Unavailable</span>
+              </div>
+              <div class="verify-item">
+                <span class="verify-label">Name</span>
+                <span class="verify-value">Unavailable</span>
+              </div>
+              <div class="verify-item">
+                <span class="verify-label">Department</span>
+                <span class="verify-value">Unavailable</span>
+              </div>
+              <div class="verify-item">
+                <span class="verify-label">Designation</span>
+                <span class="verify-value">Unavailable</span>
+              </div>
+              <div class="verify-item">
+                <span class="verify-label">Session</span>
+                <span class="verify-value">Unavailable</span>
               </div>
             </div>
           </div>
@@ -236,35 +148,41 @@ app.get("/verify/:rollNumber", (req, res) => {
       </header>
       <main class="content">
         <section class="card glass verify-card">
-          <div class="member-card">
-            <div class="member-card-header">
-              <span class="member-card-label">Air University Cyber Security Society Multan</span>
+          <div class="verify-panel">
+            <div class="verify-panel-header">
+              <h2>Member Verification</h2>
               <span class="status-pill verified">Status: ✅ Verified</span>
             </div>
-            <div class="member-card-body">
-              <div class="member-card-details">
-                <div class="code-card">
-                  <div class="code-card-header">
-                    <span class="code-dot red"></span>
-                    <span class="code-dot yellow"></span>
-                    <span class="code-dot green"></span>
-                    <span class="code-card-title">Member Card.json</span>
-                  </div>
-                  <pre class="code-card-body">
-<span class="code-key">"status"</span>: <span class="code-string">"verified"</span>,
-<span class="code-key">"roll"</span>: <span class="code-string">"${member.rollNumber}"</span>,
-<span class="code-key">"name"</span>: <span class="code-string">"${member.name}"</span>,
-<span class="code-key">"department"</span>: <span class="code-string">"${member.department}"</span>,
-<span class="code-key">"designation"</span>: <span class="code-string">"${member.designation}"</span>,
-<span class="code-key">"session"</span>: <span class="code-string">"${member.session}"</span>${
-                    issuedText
-                      ? `,
-<span class="code-key">"issued_on"</span>: <span class="code-string">"${issuedText}"</span>`
-                      : ""
-                  }
-</pre>
-                </div>
+            <p class="subtitle">This member is verified by Air University Cyber Security Society Multan.</p>
+            <div class="verify-grid">
+              <div class="verify-item">
+                <span class="verify-label">Roll Number</span>
+                <span class="verify-value">${member.rollNumber}</span>
               </div>
+              <div class="verify-item">
+                <span class="verify-label">Name</span>
+                <span class="verify-value">${member.name}</span>
+              </div>
+              <div class="verify-item">
+                <span class="verify-label">Department</span>
+                <span class="verify-value">${member.department}</span>
+              </div>
+              <div class="verify-item">
+                <span class="verify-label">Designation</span>
+                <span class="verify-value">${member.designation}</span>
+              </div>
+              <div class="verify-item">
+                <span class="verify-label">Session</span>
+                <span class="verify-value">${member.session}</span>
+              </div>
+              ${
+                issuedText
+                  ? `<div class="verify-item">
+                <span class="verify-label">Issued On</span>
+                <span class="verify-value">${issuedText}</span>
+              </div>`
+                  : ""
+              }
             </div>
           </div>
         </section>
@@ -285,10 +203,6 @@ app.get("/verify/:rollNumber", (req, res) => {
     <script src="/particles.js" type="module"></script>
   </body>
 </html>`);
-});
-
-app.get("/admin", requireAdmin, (_req, res) => {
-  res.sendFile(path.join(publicDir, "admin.html"));
 });
 
 app.get("*", (_req, res) => {

@@ -6,7 +6,7 @@
     <title>Air University Cyber Security Society Multan – Member Verification</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="home-page">
     <canvas id="bg-canvas"></canvas>
     <div class="page-wrap">
       <header class="site-header glass">
@@ -26,19 +26,34 @@
 
       <main class="content">
         <section class="card glass">
+          <div class="hero-top">
+            <span class="hero-badge">Official Verification Portal</span>
+            <span class="hero-note">24/7 digital member status check</span>
+          </div>
           <h2>Verify Society Member Card</h2>
           <p class="subtitle">
-            To verify a card, either scan the QR with your mobile device or use the roll number lookup.
+            Verify Air University Cyber Security Society Multan member cards using QR redirect
+            or direct roll-number search. Example verification link: <code>/223739</code>
           </p>
+
+          <div class="quick-info-grid">
+            <article class="info-chip">
+              <h4>QR Verification</h4>
+              <p>Scan member QR to open a direct verification link instantly.</p>
+            </article>
+            <article class="info-chip">
+              <h4>Roll Number Lookup</h4>
+              <p>Enter roll number manually to verify active society membership.</p>
+            </article>
+          </div>
 
           <div class="home-layout">
             <div class="instructions">
               <h3>Verify using QR code</h3>
               <p class="muted">
-                1. Open the camera or QR-scanner app on your mobile phone.<br />
-                2. Point it at the QR code on the AU CSSM / AU Cyber Security Society member card.<br />
-                3. Your phone will open a secure verification link.<br />
-                4. If the card is valid, the member details will be shown.
+                Open any mobile camera/QR app, scan the member QR, and it will open
+                a secure verification page directly. If the card is valid, full details
+                are shown instantly.
               </p>
             </div>
 
@@ -55,7 +70,10 @@
                     required
                   />
                 </label>
-                <button type="submit" class="primary-btn">Verify</button>
+                <div class="verify-actions">
+                  <button type="submit" class="primary-btn" id="verify-btn">Verify</button>
+                  <button type="button" class="ghost-btn" id="clear-btn">Clear</button>
+                </div>
               </form>
               <div id="roll-result" class="roll-result muted">
                 Enter a roll number to verify a member.
@@ -63,6 +81,7 @@
             </div>
           </div>
         </section>
+
       </main>
 
       <footer class="site-footer glass">

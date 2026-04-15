@@ -5,6 +5,7 @@ export interface Member {
   department: string;
   designation: string;
   session: string;
+  semester?: string;
   createdAt: string;
 }
 

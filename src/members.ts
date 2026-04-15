@@ -1,0 +1,62 @@
+import { Member } from "./types";
+
+function member(
+  name: string,
+  rollNumber: string,
+  department: string,
+  designation: string,
+  session: string,
+  semester: string
+): Member {
+  return {
+    id: rollNumber,
+    name,
+    rollNumber,
+    department,
+    designation,
+    session,
+    semester,
+    createdAt: "2026-03-09T00:00:00.000Z",
+  };
+}
+
+export const STATIC_MEMBERS: Member[] = [
+  member("Muhammad Awais", "223612", "BS Cyber Security", "Director", "F22", "8th"),
+  member("Muhammad Ahsan Ijaz", "223621", "BS Cyber Security", "Assistant Director", "F22", "8th"),
+  member("Muhammad Ahmad", "223627", "BS Cyber Security", "Assistant Director", "F22", "8th"),
+  member("Mudassir Hussain", "233610", "BS Cyber Security", "Director", "F23", "6th"),
+  member("Abdul Qadeer", "233614", "BS Cyber Security", "Core Member", "F23", "6th"),
+  member("Tayyab Shahzad", "233615", "BS Cyber Security", "Assistant Director", "F23", "6th"),
+  member("Sheraz Hussain", "233617", "BS Cyber Security", "Director", "F23", "6th"),
+  member("Muhammad Jameel", "233621", "BS Cyber Security", "Core Member", "F23", "6th"),
+  member("Laiqa Rafay", "233631", "BS Cyber Security", "Core Member", "F23", "6th"),
+  member("Syeda Maryam Haider Garde", "233632", "BS Cyber Security", "Director", "F23", "6th"),
+  member("Bakhtwar Saeed", "233638", "BS Cyber Security", "Core Member", "F23", "6th"),
+  member("Maheen Asghar Khan", "233649", "BS Cyber Security", "Core Member", "F23", "6th"),
+  member("Unaiza Fatima", "233654", "BS Cyber Security", "Core Member", "F23", "6th"),
+  member("Shameer Iftikhar", "233658", "BS Cyber Security", "Core Member", "F23", "6th"),
+  member("Ania Sohail", "243623", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Rao Hamd Rizwan", "243624", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Hafsa", "243631", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Hassan Shakeel", "243640", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Muhammad Ahmed Zahoor", "243644", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Abdul Rafay Aziz", "243671", "BS Cyber Security", "Assistant Director", "F24", "4th"),
+  member("M. Taha Anwar", "243679", "BS Cyber Security", "Assistant Director", "F24", "4th"),
+  member("Muhammad Rehman Ijaz", "243685", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Muhammad Faiq Ali", "243690", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Shoaib Ali", "243695", "BS Cyber Security", "Assistant Director", "F24", "4th"),
+  member("Syed Ali Aqdas Shah Bukhari", "243712", "BS Cyber Security", "Core Member", "F24", "4th"),
+  member("Abdullah Masood", "243753", "Software Engineering", "Core Member", "F24", "4th"),
+  member("Muhammad Zonorain", "2510012", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Fahad Iqbal", "2510022", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Muhammad Abdullah Shafiq", "2510028", "Computer Science", "Core Member", "F25", "2nd"),
+  member("Eman Fatima", "2510058", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Asma Khan", "2510066", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Hussain Abbas", "2510088", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Arfah Sohail", "2510094", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Mian Ibrahim Aqib", "2510097", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Syed Muhammad Alamdar H", "2510105", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Waqas Saeed", "2510106", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Abdul Rehman Khawar", "2510115", "BS Cyber Security", "Core Member", "F25", "2nd"),
+];
+
