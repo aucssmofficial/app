@@ -58,5 +58,7 @@ export const STATIC_MEMBERS: Member[] = [
   member("Syed Muhammad Alamdar H", "2510105", "BS Cyber Security", "Core Member", "F25", "2nd"),
   member("Waqas Saeed", "2510106", "BS Cyber Security", "Core Member", "F25", "2nd"),
   member("Abdul Rehman Khawar", "2510115", "BS Cyber Security", "Core Member", "F25", "2nd"),
+  member("Muhammad Arhum Luqman", "233633", "BS Cyber Security", "General Secretary", "F23", "6th"),
+  member("Hafsah", "243696", "BS Cyber Security", "Assistant Director", "F24", "4th"),
 ];
 
