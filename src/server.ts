@@ -107,7 +107,7 @@ app.get("/:rollNumber", (req, res) => {
         <div class="footer-left">
           <p>
             Contact:
-            <a href="mailto:ausccm.official@gmail.com">ausccm.official@gmail.com</a>
+            <a href="mailto:aucssm.official@gmail.com">aucssm.official@gmail.com</a>
           </p>
         </div>
         <div class="footer-right">
@@ -191,7 +191,7 @@ app.get("/:rollNumber", (req, res) => {
         <div class="footer-left">
           <p>
             Contact:
-            <a href="mailto:ausccm.official@gmail.com">ausccm.official@gmail.com</a>
+            <a href="mailto:aucssm.official@gmail.com">aucssm.official@gmail.com</a>
           </p>
         </div>
         <div class="footer-right">
